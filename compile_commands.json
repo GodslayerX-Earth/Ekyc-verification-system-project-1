@@ -1,8 +1,0 @@
-[
-{
-  "directory": "/Users/himanshu/ekyc_project/build",
-  "command": "/usr/bin/c++ -DPROJECT_SOURCE_DIR=\\\"/Users/himanshu/ekyc_project\\\" -I/Users/himanshu/ekyc_project/onnxruntime_dist/include -isystem /opt/homebrew/Cellar/opencv/5.0.0_7/include/opencv5 -g -std=gnu++17 -arch arm64 -o CMakeFiles/ekyc_app.dir/main.cpp.o -c /Users/himanshu/ekyc_project/main.cpp",
-  "file": "/Users/himanshu/ekyc_project/main.cpp",
-  "output": "CMakeFiles/ekyc_app.dir/main.cpp.o"
-}
-]
