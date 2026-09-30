@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>eKYC Vision Console</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand-lockup">
+        <span class="brand-mark">eK</span>
+        <div>
+          <p class="eyebrow">LOCAL VISION SYSTEM</p>
+          <h1>eKYC Vision Console</h1>
+        </div>
+      </div>
+      <div class="status-pill"><span class="status-dot" id="statusDot"></span><span id="statusText">Starting camera</span></div>
+    </header>
+
+    <section class="workspace">
+      <section class="stage-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">LIVE CAPTURE</p>
+            <h2>Face topology</h2>
+          </div>
+          <span class="frame-rate" id="fpsValue">-- FPS</span>
+        </div>
+        <div class="camera-stage">
+          <video id="video" autoplay playsinline muted></video>
+          <canvas id="canvas"></canvas>
+          <div class="stage-hud hud-top"><span id="faceCount">0 faces</span><span id="resolution">--</span></div>
+          <div class="stage-hud hud-bottom"><span>MediaPipe Face Mesh</span><span id="latencyValue">-- ms</span></div>
+          <div class="environment-card">
+            <p class="eyebrow">ENVIRONMENT</p>
+            <div><span>Lighting</span><strong id="lightingValue">Good</strong></div>
+            <div><span>People</span><strong id="peopleValue">0</strong></div>
+            <div><span>Camera</span><strong id="cameraState">Ready</strong></div>
+            <div><span>Emotion</span><strong id="emotionValue">Neutral</strong></div>
+          </div>
+          <div class="camera-message" id="cameraMessage">Requesting camera access...</div>
+        </div>
+      </section>
+
+      <div class="right-rail">
+        <aside class="control-panel">
+        <div class="panel-heading compact">
+          <div>
+            <p class="eyebrow">CONTROL DECK</p>
+            <h2>Render options</h2>
+          </div>
+        </div>
+        <div class="control-list">
+          <label class="toggle-row"><span>Topology mesh</span><input type="checkbox" id="meshToggle" checked><i></i></label>
+          <label class="toggle-row"><span>Landmark points</span><input type="checkbox" id="pointsToggle" checked><i></i></label>
+          <label class="toggle-row"><span>Glowing hexagon</span><input type="checkbox" id="ovalToggle" checked><i></i></label>
+          <label class="toggle-row"><span>Mirror view</span><input type="checkbox" id="mirrorToggle" checked><i></i></label>
+          <label class="toggle-row"><span>Vector console</span><input type="checkbox" id="vectorsToggle" checked><i></i></label>
+        </div>
+        <div class="select-block">
+          <label for="densitySelect">Mesh density</label>
+          <select id="densitySelect">
+            <option value="adaptive" selected>Adaptive 3D</option>
+            <option value="contours">Contours only</option>
+            <option value="keypoints">Key regions</option>
+          </select>
+        </div>
+        <div class="metric-grid">
+          <div class="metric"><span>LANDMARKS</span><strong id="landmarkCount">468</strong></div>
+          <div class="metric"><span>TRACKING</span><strong id="trackingValue">Idle</strong></div>
+        </div>
+        <div class="liveness-status" aria-live="polite">
+          <div class="liveness-heading"><span>LIVENESS CHECK</span><strong id="livenessValue">Waiting</strong></div>
+          <p id="livenessInstruction">Show one face to begin the active challenge.</p>
+          <button class="secondary-button" id="resetLivenessButton" type="button">Reset liveness</button>
+        </div>
+        <button class="action-button" id="cameraButton">Enable camera</button>
+        </aside>
+
+        <section class="identity-panel data-panel">
+          <div class="panel-heading compact">
+            <div><p class="eyebrow">LOCAL IDENTITY STORE</p><h2>Recognized person</h2></div>
+            <span class="match-badge" id="matchBadge">No match</span>
+          </div>
+          <div class="identity-result" id="identityResult">
+            <strong id="identityName">Unknown face</strong>
+            <span id="identityDetails">Enroll a profile, then look at the camera.</span>
+          </div>
+          <div class="profile-form">
+            <input id="profileName" type="text" placeholder="Full name" autocomplete="off">
+            <input id="profileId" type="text" placeholder="ID / employee number" autocomplete="off">
+            <textarea id="profileDetails" rows="2" placeholder="Additional details"></textarea>
+            <button class="action-button" id="enrollButton" type="button">Enroll current face</button>
+            <button class="secondary-button" id="clearProfilesButton" type="button">Clear saved profiles</button>
+          </div>
+          <p class="identity-note">Enrollment and matching require the active liveness challenge. This browser-only check is not a certified presentation-attack detector.</p>
+        </section>
+
+        <section class="data-grid">
+          <article class="data-panel vector-panel">
+            <div class="panel-heading compact"><div><p class="eyebrow">STREAM OUTPUT</p><h2>Landmark vectors</h2></div><button class="icon-button" id="copyButton" title="Copy latest vector data">Copy</button></div>
+            <pre id="vectorOutput">Waiting for a face...</pre>
+          </article>
+          <article class="data-panel event-panel">
+            <div class="panel-heading compact"><div><p class="eyebrow">SYSTEM EVENTS</p><h2>Activity</h2></div></div>
+            <div class="event-list" id="eventList"><div class="event"><span class="event-time">--:--:--</span><span>Waiting for camera permissions</span></div></div>
+          </article>
+        </section>
+      </div>
+    </section>
+    <p class="privacy-note">All camera processing happens in this browser tab. No frames are uploaded.</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
